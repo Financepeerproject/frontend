@@ -1,8 +1,8 @@
 import React from "react";
-import UploadData from "./components/UploadData";
+import Page from "./components/Page";
 function App() {
   return (
-    <UploadData />
+    <Page />
   );
 }
 

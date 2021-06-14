@@ -3,7 +3,7 @@ import AuthenticationComponent from './AuthenticationComponent';
 import DataList from "./DataList";
 import 'antd/dist/antd.css';
 const base_url = "http://127.0.0.1:8000/";
-class UploadData extends Component {
+class Page extends Component {
 	constructor(props) {
 		super(props)
 
@@ -80,23 +80,9 @@ class UploadData extends Component {
 		})
 	}
 	render() {
-		const { logged_in, username, displayed_form } = this.state;
+		const { username } = this.state;
 		return (
 			<div>
-				{/* <NavComponent
-				logged_in = {logged_in}
-				handleLogin = {this.handleLogin}
-				handleLoginChange = {this.handleLoginChange}
-				handleLogout = {this.handleLogout}
-				username = {username}
-				displayed_form = {displayed_form}
-				display_form = {this.display_form}
-				 />
-				<h3>{
-					this.state.logged_in
-					? `Hello ${this.state.username}`
-					: 'Please log in'
-				}</h3> */}
                 {this.state.logged_in ? <DataList handleLogout={this.handleLogout}/> :  
 					<AuthenticationComponent
 						handleLogin={this.handleLogin}
@@ -110,4 +96,4 @@ class UploadData extends Component {
 	}
 }
 
-export default UploadData;
+export default Page;

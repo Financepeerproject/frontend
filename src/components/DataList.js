@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { Form, Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Button, Upload, notification } from 'antd';
+import { UploadOutlined, RadiusUprightOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import Axios from 'axios';
 
@@ -48,16 +48,27 @@ export default function DataList(props) {
 		})
     }
 
-    let sendDataToServer = function(data) {
-        Axios.post(base_url+ 'api/set_list/', {body: data}, {
+    let sendDataToServer = function(new_data) {
+        Axios.post(base_url+ 'api/set_list/', {body: new_data}, {
             headers: {
                 Authorization : `JWT ${localStorage.getItem('token')}`
             }
         }).then(response => {
             console.log(response);
+            notification.success({
+                message: "Upload successful",
+                duration: 3
+            });
+            setData([...data, ...new_data]);
         }).catch(error => {
-            props.handleLogout();
+            if(error.response.status === 401) {
+                props.handleLogout();
+            }
             console.log(error);
+            notification.error({
+                message: "Some error happened!",
+                duration: 3
+            });
         });
 
     }
@@ -70,7 +81,6 @@ export default function DataList(props) {
                 reader.readAsText(file);
                 reader.onload = () => {
                     sendDataToServer(JSON.parse(reader.result));
-                    setData([...data, ...JSON.parse(reader.result)]);
                 }
             return false;
         }
