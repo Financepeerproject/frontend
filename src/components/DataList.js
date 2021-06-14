@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { Form, Input, Button, Card, Upload } from 'antd';
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-import { Table, Tag, Space } from 'antd';
+import { Form, Button, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 import Axios from 'axios';
 
 const base_url ="http://127.0.0.1:8000/";
@@ -39,10 +39,12 @@ export default function DataList(props) {
 		})
 		.then(response => response.json())
 		.then(json => {
-            setData(json);
+            setData(json||[]);
 		})
 		.catch(error => {
-			console.log(error)
+			console.log(error);
+            setData([]);
+            props.handleLogout();
 		})
     }
 
@@ -68,11 +70,11 @@ export default function DataList(props) {
                 reader.readAsText(file);
                 reader.onload = () => {
                     sendDataToServer(JSON.parse(reader.result));
+                    setData([...data, ...JSON.parse(reader.result)]);
                 }
             return false;
         }
     }
-    // fetchDataFromServer();
     useEffect(()=> {
         fetchDataFromServer();
     }, []);
